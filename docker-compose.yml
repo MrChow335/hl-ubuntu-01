@@ -1,0 +1,127 @@
+  version: '3.8'
+  services:
+    plexserver:
+      container_name: docker_plex
+      restart: unless-stopped
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+        - VERSION=docker
+        - PLEX_CLAIM=claim-x5-zFxm4H1kuBykNn29c
+      volumes:
+        - ./config/plex:/config
+        - /mnt/plexStorage/:/mnt/plexStorage
+#        - /mnt/plexStorage/TV\ Show/:/tv
+        - /mnt/plexStorage/Movies:/movies
+      ports:
+        - 32400:32400
+        - 1900:1900
+    homerserver:
+      image: b4bz/homer:latest
+      container_name: docker_homer
+      restart: always
+      ports: 
+        - 8080:8080
+      volumes:
+        - ./config/homer:/www/assets
+        
+
+    
+    # Search for Torrents 
+    qbittorrent:
+      image: lscr.io/linuxserver/qbittorrent:latest
+      container_name: docker_qbittorrent
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+        - WEBUI_PORT=8081
+        - TORRENTING_PORT=6881
+      volumes:
+        - ./config/qbittorrent:/config
+        - /mnt/plexStorage/Downloads:/downloads
+      ports:
+        - 8081:8081
+        - 6881:6881
+        - 6881:6881/udp
+      restart: always
+
+    sonarr: # TV Shows
+      image: lscr.io/linuxserver/sonarr:latest
+      container_name: docker_sonarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./config/sonarr:/config
+        - /mnt/plexStorage/TV:/tv #optional
+        - /mnt/plexStorage/Downloads:/downloads #optional
+      ports:
+        - 8989:8989
+      restart: always
+
+    radarr: # Movies
+      image: lscr.io/linuxserver/radarr:latest
+      container_name: docker_radarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./config/radarr:/config
+        - /mnt/plexStorage/Movies:/movies #optional
+        - /mnt/plexStorage/Downloads:/downloads #optional
+      ports:
+        - 7878:7878
+      restart: always
+
+    lidarr: # Music
+      image: lscr.io/linuxserver/lidarr:latest
+      container_name: docker_lidarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./config/lidarr:/config
+        - /mnt/plexStorage/music:/music #optional
+        - /mnt/plexStorage/downloads:/downloads #optional
+      ports:
+        - 8686:8686
+      restart: always
+
+    requestrr:
+      image: lscr.io/linuxserver/requestrr:latest
+      container_name: docker_requestrr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/London
+      volumes:
+        - ./config/requestrr:/config
+      ports:
+        - 4545:4545
+        - 8082:80
+      restart: always
+    
+    prowlarr: # Indexing Manager
+      image: lscr.io/linuxserver/prowlarr:latest
+      container_name: docker_prowlarr
+      environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+      volumes:
+        - ./config/prowlarr:/config
+      ports:
+        - 9696:9696
+      restart: always
+
+
+
+
