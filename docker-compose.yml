@@ -46,36 +46,37 @@ services:
         - OPENHAB_HTTP_PORT=8080
         - OPENHAB_HTTPS_PORT=8443
 
-#    # Search for Torrents 
-#    # QBittorrent
-#    qbittorrent:
-#      image: lscr.io/linuxserver/qbittorrent:latest
-#      container_name: docker_qbittorrent
-#      environment:
-#        - VPN_USERNAME=
-#        - VPN_PASSWORD=
-#        - VPN_ENABLED=yes
-#        - PUID=1000
-#        - PGID=1000
-#        - TZ=Etc/UTC
-#        - WEBUI_PORT=8081
-#        - INCOMING_PORT=8999
-#        - TORRENTING_PORT=6881
-#        - LAN_NETWORK=
-#        - NAME_SERVERS=
-#      volumes:
-#        - ./config/qbittorrent:/config
-#        - /mnt/plexStorage/Downloads:/downloads
-#        - /mnt/TNas:/TNas
-#        - /mnt/Anime:/Anime
-#        - /etc/timezone/:/etc/timezone:ro
-#      ports:
-#        - 8081:8081
-#        - 6881:6881
-#        - 6881:6881/udp
-#        - 8999:8999
-#        - 8999:8999/udp
-#      restart: always
+    # Search for Torrents 
+    # QBittorrent
+    qbittorrent:
+      image: lscr.io/linuxserver/qbittorrent:latest
+      container_name: docker_qbittorrent
+      environment:
+        - VPN_USERNAME=
+        - VPN_PASSWORD=
+        - VPN_ENABLED=yes
+        - PUID=1000
+        - PGID=1000
+        - TZ=Etc/UTC
+        - WEBUI_PORT=8081
+        - INCOMING_PORT=8999
+        - TORRENTING_PORT=6881
+        - LAN_NETWORK=
+        - NAME_SERVERS=
+      volumes:
+        - ./config/qbittorrent:/config
+        - /mnt/plexStorage/Downloads:/downloads
+        - /mnt/TNas:/TNas
+        - /mnt/Anime:/Anime
+        - /etc/timezone/:/etc/timezone:ro
+      ports:
+        - 8081:8081
+        - 6881:6881
+        - 6881:6881/udp
+        - 8999:8999
+        - 8999:8999/udp
+      restart: always
+
 #    # Jacket
 #    Jackett:
 #      image: "linuxserver/jackett"
@@ -107,8 +108,8 @@ services:
 #        - PUID=1000
 #        - PGID=1000  
 #    
-#    # Sonarr
-#    sonarr: # TV Shows
+#    # Sonarr TV Shows
+#    sonarr:
 #      image: lscr.io/linuxserver/sonarr:latest
 #      container_name: docker_sonarr
 #      environment:
@@ -122,8 +123,9 @@ services:
 #      ports:
 #        - 8989:8989
 #      restart: always
-#
-#    radarr: # Movies
+
+#     # Radarr Movies
+#    radarr: 
 #      image: lscr.io/linuxserver/radarr:latest
 #      container_name: docker_radarr
 #      environment:
